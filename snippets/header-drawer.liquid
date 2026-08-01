@@ -89,6 +89,10 @@
           {{- 'icon-close.svg' | inline_asset_content -}}
         </span>
       </button>
+      <div class="beauty-drawer__brand">
+        <span>{{ shop.name }}</span>
+        <small>Beauty, considered</small>
+      </div>
       <nav
         class="menu-drawer__navigation"
         style="
@@ -879,7 +883,7 @@
     overflow: initial;
   }
 
-  .menu-drawer__backdrop {
+      .menu-drawer__backdrop {
     position: fixed;
     top: 0;
     left: 0;

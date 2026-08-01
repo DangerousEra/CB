@@ -16,3 +16,21 @@ body { background: #fff; color: var(--beauty-ink); }
 .button, .button-custom, .shopify-payment-button__button { border-radius: 9px !important; letter-spacing: .05em; font-size: .78rem; }
 .cart-summary { background: var(--beauty-blush) !important; }
 @media (max-width: 749px) { .header-section { border-bottom: 1px solid var(--beauty-line); } }
+
+/* Premium mobile navigation */
+@media (max-width: 749px) {
+  .menu-drawer { background: #fffaf8 !important; color: #171717 !important; }
+  .menu-drawer__close-button.menu-drawer__close-button { top: 18px; right: 18px; width: 42px; height: 42px; border: 1px solid #eaded9; border-radius: 50%; background: #fff !important; color: #171717 !important; }
+  .beauty-drawer__brand { display: flex; flex-direction: column; gap: 5px; padding: 30px 72px 27px 27px; border-bottom: 1px solid #eaded9; }
+  .beauty-drawer__brand span { color: #171717; font-size: 20px; font-weight: 750; letter-spacing: .12em; line-height: 1; text-transform: uppercase; }
+  .beauty-drawer__brand small { color: #a77d6e; font-family: Georgia, serif; font-size: 13px; font-style: italic; }
+  .menu-drawer__navigation { padding: 19px 27px 8px !important; }
+  .menu-drawer__menu-item--mainlist { min-height: 57px !important; padding-block: 13px !important; border-bottom: 1px solid #eaded9 !important; color: #171717 !important; font-size: 19px !important; font-weight: 550 !important; letter-spacing: -.025em !important; }
+  .menu-drawer__menu-item--mainlist .menu-drawer__menu-item-text { padding-right: 14px; }
+  .menu-drawer__menu-item--mainlist > .svg-wrapper { width: 18px; height: 18px; color: #a77d6e; }
+  .menu-drawer__menu-item--child { min-height: 42px !important; color: #675a55 !important; font-size: 14px !important; }
+  .menu-drawer__menu--childlist { padding: 4px 0 11px 13px !important; border-bottom: 1px solid #eaded9; }
+  .menu-drawer__utility-links { margin: 21px 27px 32px !important; padding: 17px 0 0 !important; border-top: 0 !important; }
+  .menu-drawer__account { min-height: 45px; padding: 0 15px !important; border: 1px solid #171717; border-radius: 8px; background: #171717; color: #fff !important; font-size: 12px; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; }
+  .menu-drawer__backdrop { background: rgb(36 21 17 / 42%) !important; backdrop-filter: blur(2px); }
+}

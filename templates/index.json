@@ -1,0 +1,27 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "beauty_home": {
+      "type": "beauty-brand-home",
+      "settings": {
+        "eyebrow": "Skin, considered",
+        "heading": "Your glow begins with a ritual.",
+        "text": "Consciously crafted skincare for the quiet moments that bring you back to yourself.",
+        "button_label": "Shop the ritual",
+        "button_link": "shopify://collections/all",
+        "microcopy": "Free shipping on orders over $75",
+        "promise_1": "Thoughtful ingredients",
+        "promise_2": "Sensitive-skin minded",
+        "promise_3": "Always cruelty-free",
+        "collection": "all",
+        "collection_heading": "Best-loved essentials",
+        "products_to_show": 4
+      }
+    }
+  },
+  "order": ["beauty_home"]
+}

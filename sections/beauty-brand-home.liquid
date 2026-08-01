@@ -1,0 +1,63 @@
+{% liquid
+  assign hero_image = section.settings.hero_image
+  assign collection = section.settings.collection
+%}
+
+<section class="beauty-home" id="beauty-home-{{ section.id }}">
+  <div class="beauty-home__hero">
+    <div class="beauty-home__hero-copy">
+      <p class="beauty-home__eyebrow">{{ section.settings.eyebrow }}</p>
+      <h1>{{ section.settings.heading }}</h1>
+      <div class="beauty-home__intro">{{ section.settings.text }}</div>
+      <a class="beauty-home__button" href="{{ section.settings.button_link }}">{{ section.settings.button_label }}</a>
+      <p class="beauty-home__microcopy">{{ section.settings.microcopy }}</p>
+    </div>
+    <div class="beauty-home__hero-art">
+      {% if hero_image != blank %}
+        {{ hero_image | image_url: width: 2400 | image_tag: class: 'beauty-home__image', loading: 'eager', fetchpriority: 'high', widths: '750, 1100, 1600, 2400', alt: section.settings.heading }}
+      {% else %}
+        <div class="beauty-home__image-placeholder" aria-label="Upload a hero image in the theme editor">
+          <span>Campaign image</span>
+          <small>Upload your brand visual in Theme Editor</small>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="beauty-home__promises" aria-label="Brand promises">
+    <p><span>01</span>{{ section.settings.promise_1 }}</p><p><span>02</span>{{ section.settings.promise_2 }}</p><p><span>03</span>{{ section.settings.promise_3 }}</p>
+  </div>
+  <div class="beauty-home__collections">
+    <div class="beauty-home__collections-heading"><p class="beauty-home__eyebrow">Discover</p><h2>Collections</h2></div>
+    <div class="beauty-home__collection-grid">
+      {% for item in collections limit: 4 %}
+        {% if item[1].handle != 'all' %}
+          <a href="{{ item[1].url }}" class="beauty-home__collection-card">
+            {% if item[1].featured_image != blank %}{{ item[1].featured_image | image_url: width: 800 | image_tag: loading: 'lazy', alt: item[1].title }}{% else %}{{ 'collection-' | append: forloop.index | placeholder_svg_tag: 'placeholder-svg' }}{% endif %}
+            <span>{{ item[1].title }}</span><small>All products <b aria-hidden="true">→</b></small>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  <div class="beauty-home__ritual"><div><p class="beauty-home__eyebrow">Intentional skincare</p><h2>Small rituals.<br>Visible radiance.</h2></div><p class="beauty-home__ritual-text">Thoughtful formulas, sensorial textures and effective essentials designed to make your daily routine feel like a moment for yourself.</p></div>
+  {% if collection != blank %}
+    <div class="beauty-home__shop"><div class="beauty-home__shop-heading"><div><p class="beauty-home__eyebrow">The essentials</p><h2>{{ section.settings.collection_heading }}</h2></div><a href="{{ collection.url }}">Shop all <span aria-hidden="true">→</span></a></div>
+      <div class="beauty-home__products">
+        {% for product in collection.products limit: section.settings.products_to_show %}
+          <article class="beauty-home__product"><a href="{{ product.url }}" class="beauty-home__product-image">{% if product.featured_image != blank %}{{ product.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360, 540, 720, 900', alt: product.title }}{% else %}{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}{% endif %}</a><div class="beauty-home__product-details"><div><p class="beauty-home__product-type">{{ product.type | default: 'Skincare' }}</p><h3><a href="{{ product.url }}">{{ product.title }}</a></h3></div><p class="beauty-home__price">{{ product.price | money }}</p></div></article>
+        {% else %}
+          {% for i in (1..4) %}<article class="beauty-home__product beauty-home__product--placeholder"><div class="beauty-home__product-image">{{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}</div><div class="beauty-home__product-details"><div><p class="beauty-home__product-type">Your collection</p><h3>Signature essential</h3></div><p class="beauty-home__price">$00.00</p></div></article>{% endfor %}
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+  <div class="beauty-home__quote"><p class="beauty-home__eyebrow">Our point of view</p><blockquote>“Beauty that feels grounded, generous and entirely your own.”</blockquote><a href="{{ section.settings.story_link }}">Discover our philosophy <span aria-hidden="true">→</span></a></div>
+</section>
+
+{% stylesheet %}
+.beauty-home{background:#fff;color:#171717;overflow:hidden;font-family:var(--font-body--family,Arial,sans-serif)}.beauty-home__hero{min-height:min(760px,82vh);display:grid;grid-template-columns:1fr;position:relative;background:#f5e3df}.beauty-home__hero-copy{z-index:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:clamp(85px,10vw,160px) 28px;color:#171717}.beauty-home__eyebrow,.beauty-home__product-type{margin:0 0 14px;font-size:11px;font-weight:600;letter-spacing:.12em;line-height:1.3;text-transform:uppercase}.beauty-home h1,.beauty-home h2,.beauty-home h3,.beauty-home blockquote{font-family:var(--font-heading--family,var(--font-body--family,Arial,sans-serif));font-weight:500}.beauty-home h1{max-width:760px;margin:0;font-size:clamp(46px,6vw,92px);letter-spacing:-.05em;line-height:.98}.beauty-home__intro{max-width:430px;margin:22px 0 28px;font-size:16px;line-height:1.6}.beauty-home__button{display:inline-flex;align-items:center;min-height:48px;padding:0 24px;color:#171717;background:#fff;border-radius:10px;font-size:12px;font-weight:650;letter-spacing:.08em;text-decoration:none;transition:transform .2s ease,background .2s ease}.beauty-home__button:hover{background:#f3f3f3;transform:translateY(-2px)}.beauty-home__microcopy{margin:16px 0 0;font-size:12px}.beauty-home__hero-art{position:absolute;inset:0;min-height:0;overflow:hidden}.beauty-home__hero-art:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,246,244,.58),rgba(255,246,244,.12) 58%,rgba(255,246,244,.05))}.beauty-home__image,.beauty-home__image-placeholder{width:100%;height:100%;display:block;object-fit:cover;object-position:center}.beauty-home__image-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:34px;box-sizing:border-box;background:radial-gradient(circle at 68% 30%,#f9dcd4 0 7%,transparent 7.3%),radial-gradient(circle at 78% 52%,#efd0c7 0 14%,transparent 14.3%),linear-gradient(135deg,#f8ece8,#edd5cd);color:#8e6e65;text-transform:uppercase;letter-spacing:.12em}.beauty-home__image-placeholder span{font-size:11px;font-weight:700}.beauty-home__image-placeholder small{margin-top:9px;font-size:9px;letter-spacing:.08em;text-transform:none}.beauty-home__promises{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:20px max(28px,calc((100vw - 1360px)/2));border-bottom:1px solid #ededed;background:#fff}.beauty-home__promises p{margin:0;font-size:11px;letter-spacing:.03em;text-align:center}.beauty-home__promises span{margin-right:9px;color:#cea08a;font-size:10px}.beauty-home__collections{max-width:1320px;margin:auto;padding:92px 32px 32px}.beauty-home__collections-heading{margin-bottom:38px}.beauty-home h2{margin:0;font-size:clamp(34px,3.2vw,52px);letter-spacing:-.04em;line-height:1}.beauty-home__collection-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}.beauty-home__collection-card{position:relative;display:block;aspect-ratio:1;overflow:hidden;background:#f5eded;color:#171717;text-decoration:none}.beauty-home__collection-card img,.beauty-home__collection-card svg{width:100%;height:100%;display:block;object-fit:cover;transition:transform .45s ease}.beauty-home__collection-card:after{content:'';position:absolute;inset:0;background:linear-gradient(transparent 55%,rgba(0,0,0,.32))}.beauty-home__collection-card:hover img{transform:scale(1.05)}.beauty-home__collection-card span,.beauty-home__collection-card small{position:absolute;z-index:1;left:20px;color:#fff}.beauty-home__collection-card span{bottom:40px;font-size:22px;font-weight:500}.beauty-home__collection-card small{bottom:18px;font-size:10px;letter-spacing:.1em;text-transform:uppercase}.beauty-home__collection-card b{margin-left:5px;font-size:13px}.beauty-home__ritual{display:grid;grid-template-columns:1fr 1fr;gap:50px;max-width:1320px;margin:auto;padding:100px 32px}.beauty-home__ritual-text{max-width:420px;margin:auto 0 0;font-size:17px;line-height:1.65}.beauty-home__shop{padding:86px max(28px,calc((100vw - 1360px)/2));background:#fff7f5}.beauty-home__shop-heading{display:flex;align-items:end;justify-content:space-between;gap:22px;margin-bottom:38px}.beauty-home__shop-heading a,.beauty-home__quote a{padding-bottom:4px;border-bottom:1px solid currentColor;color:inherit;font-size:12px;font-weight:650;letter-spacing:.04em;text-decoration:none}.beauty-home__shop-heading span,.beauty-home__quote span{margin-left:8px}.beauty-home__products{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}.beauty-home__product-image{position:relative;aspect-ratio:.86;display:block;overflow:hidden;background:#f1f1f1}.beauty-home__product-image img,.beauty-home__product-image svg{width:100%;height:100%;display:block;object-fit:cover;transition:transform .45s ease}.beauty-home__product:hover img{transform:scale(1.04)}.beauty-home__product-details{display:flex;justify-content:space-between;gap:8px;padding-top:14px}.beauty-home__product-type{margin-bottom:4px;color:#777;font-size:9px}.beauty-home h3{margin:0;font-size:16px;letter-spacing:-.025em}.beauty-home h3 a{color:inherit;text-decoration:none}.beauty-home__price{margin:16px 0 0;font-size:13px;white-space:nowrap}.beauty-home__quote{padding:120px 30px;text-align:center;background:#cea08a;color:#fff}.beauty-home__quote .beauty-home__eyebrow{color:#fff1ec}.beauty-home blockquote{max-width:760px;margin:0 auto 35px;font-size:clamp(36px,4.5vw,66px);letter-spacing:-.05em;line-height:1.04}@media screen and (max-width:749px){.beauty-home__hero{min-height:620px}.beauty-home__hero-copy{justify-content:flex-start;padding:105px 26px 40px}.beauty-home__hero-art:after{background:linear-gradient(180deg,rgba(255,246,244,.82),rgba(255,246,244,.2) 65%)}.beauty-home__promises{grid-template-columns:1fr;gap:11px;padding:19px 28px}.beauty-home__collections{padding:65px 20px 20px}.beauty-home__collection-grid{grid-template-columns:repeat(2,1fr);gap:12px}.beauty-home__collection-card span{left:14px;bottom:34px;font-size:18px}.beauty-home__collection-card small{left:14px;bottom:15px;font-size:8px}.beauty-home__ritual{grid-template-columns:1fr;gap:26px;padding:80px 28px}.beauty-home__ritual-text{margin:0;font-size:16px}.beauty-home__shop{padding:70px 20px}.beauty-home__shop-heading{align-items:flex-start;margin-bottom:30px}.beauty-home__products{grid-template-columns:repeat(2,1fr);gap:28px 12px}.beauty-home h3{font-size:15px}.beauty-home__price{margin-top:14px}.beauty-home__quote{padding:95px 28px}}
+{% endstylesheet %}
+
+{% schema %}
+{"name":"Beauty brand home","settings":[{"type":"image_picker","id":"hero_image","label":"Hero image"},{"type":"text","id":"eyebrow","label":"Hero eyebrow","default":"Skin, considered"},{"type":"textarea","id":"heading","label":"Hero heading","default":"Your glow begins with a ritual."},{"type":"textarea","id":"text","label":"Hero copy","default":"Consciously crafted skincare for the quiet moments that bring you back to yourself."},{"type":"text","id":"button_label","label":"Button label","default":"Shop the ritual"},{"type":"url","id":"button_link","label":"Button link"},{"type":"text","id":"microcopy","label":"Microcopy","default":"Free shipping on orders over $75"},{"type":"text","id":"promise_1","label":"Promise 1","default":"Thoughtful ingredients"},{"type":"text","id":"promise_2","label":"Promise 2","default":"Sensitive-skin minded"},{"type":"text","id":"promise_3","label":"Promise 3","default":"Always cruelty-free"},{"type":"collection","id":"collection","label":"Featured collection"},{"type":"text","id":"collection_heading","label":"Collection heading","default":"Best-loved essentials"},{"type":"range","id":"products_to_show","min":2,"max":8,"step":1,"label":"Products to show","default":4},{"type":"url","id":"story_link","label":"Philosophy link"}],"presets":[{"name":"Beauty brand home"}]}
+{% endschema %}

@@ -1,0 +1,18 @@
+/* Global premium beauty storefront refinements */
+:root { --beauty-ink: #171717; --beauty-blush: #fff1ee; --beauty-rose: #cea08a; --beauty-line: #e8e5e3; }
+body { background: #fff; color: var(--beauty-ink); }
+.header-section { border-bottom: 1px solid var(--beauty-line); background: rgba(255,255,255,.97); }
+.header-section a, .header-section button { letter-spacing: .035em; }
+.header-section [class*='header__row'] { padding-inline: clamp(18px, 3vw, 48px); }
+.header-section [class*='header__row--bottom'] { min-height: 48px; border-top: 1px solid var(--beauty-line); }
+.header-section [class*='header__row--bottom'] a { font-size: .72rem; font-weight: 650; letter-spacing: .09em; text-transform: uppercase; }
+.header-section [class*='header__logo'] a { font-size: 1.15rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+.header-section [class*='header__actions'] { gap: 14px; }
+.product-card, .collection-card { border-radius: 0 !important; }
+.product-card img, .card-gallery img { transition: transform .45s ease; }
+.product-card:hover img { transform: scale(1.03); }
+.main-collection .section, .product-information { background: #fff; }
+.main-collection h1, .product-information h1 { letter-spacing: -.045em; }
+.button, .button-custom, .shopify-payment-button__button { border-radius: 9px !important; letter-spacing: .05em; font-size: .78rem; }
+.cart-summary { background: var(--beauty-blush) !important; }
+@media (max-width: 749px) { .header-section { border-bottom: 1px solid var(--beauty-line); } }

@@ -1,0 +1,32 @@
+<section class="beauty-footer">
+  <div class="beauty-footer__top">
+    <div class="beauty-footer__brand">
+      <p class="beauty-footer__eyebrow">Daily rituals, beautifully made</p>
+      <h2>{{ shop.name }}</h2>
+      <p>{{ section.settings.description }}</p>
+    </div>
+    <div class="beauty-footer__newsletter">
+      <p class="beauty-footer__eyebrow">Stay in the glow</p>
+      <h3>{{ section.settings.newsletter_heading }}</h3>
+      {% form 'customer', class: 'beauty-footer__form' %}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <label class="visually-hidden" for="BeautyFooterEmail">Email address</label>
+        <input id="BeautyFooterEmail" type="email" name="contact[email]" required placeholder="Your email address">
+        <button type="submit" aria-label="Subscribe">→</button>
+      {% endform %}
+      {% if form.posted_successfully? %}<p class="beauty-footer__success">Thank you for joining us.</p>{% endif %}
+    </div>
+  </div>
+  <div class="beauty-footer__links">
+    <div><p class="beauty-footer__eyebrow">Explore</p>{% if section.settings.menu != blank %}<ul>{% for link in section.settings.menu.links %}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{% endfor %}</ul>{% endif %}</div>
+    <div><p class="beauty-footer__eyebrow">Customer care</p><ul><li><a href="{{ routes.search_url }}">Search</a></li><li><a href="{{ routes.cart_url }}">Your bag</a></li>{% if shop.customer_accounts_enabled %}<li><a href="{{ routes.account_login_url }}">Your account</a></li>{% endif %}</ul></div>
+    <div><p class="beauty-footer__eyebrow">Follow along</p><ul>{% if settings.social_instagram_link != blank %}<li><a href="{{ settings.social_instagram_link }}">Instagram</a></li>{% endif %}{% if settings.social_tiktok_link != blank %}<li><a href="{{ settings.social_tiktok_link }}">TikTok</a></li>{% endif %}<li><a href="mailto:{{ shop.email }}">Email us</a></li></ul></div>
+  </div>
+  <div class="beauty-footer__bottom"><p>© {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</p><div>{% for policy in shop.policies %}{% if policy != blank %}<a href="{{ policy.url }}">{{ policy.title }}</a>{% endif %}{% endfor %}</div></div>
+</section>
+{% stylesheet %}
+.beauty-footer{background:#171717;color:#fff;padding:75px max(28px,calc((100vw - 1360px)/2)) 28px}.beauty-footer__top{display:grid;grid-template-columns:1fr 1fr;gap:80px;padding-bottom:70px;border-bottom:1px solid #4a4a4a}.beauty-footer__eyebrow{margin:0 0 14px;color:#cfa38d;font-size:10px;font-weight:650;letter-spacing:.13em;text-transform:uppercase}.beauty-footer h2,.beauty-footer h3{margin:0;font-family:var(--font-heading--family,Arial,sans-serif);font-weight:500;letter-spacing:-.04em}.beauty-footer h2{font-size:48px}.beauty-footer h3{max-width:410px;font-size:30px}.beauty-footer__brand>p:not(.beauty-footer__eyebrow){max-width:380px;margin:19px 0 0;color:#cfcfcf;line-height:1.6}.beauty-footer__form{display:flex;max-width:470px;margin-top:25px;border-bottom:1px solid #8b8b8b}.beauty-footer__form input{width:100%;padding:13px 0;border:0;background:transparent;color:#fff;outline:0}.beauty-footer__form input::placeholder{color:#b8b8b8}.beauty-footer__form button{border:0;background:transparent;color:#fff;font-size:21px;cursor:pointer}.beauty-footer__success{font-size:13px;color:#cfa38d}.beauty-footer__links{display:grid;grid-template-columns:2fr 1fr 1fr;gap:30px;padding:48px 0}.beauty-footer ul{margin:0;padding:0;list-style:none}.beauty-footer li+li{margin-top:11px}.beauty-footer a{color:#fff;text-decoration:none;font-size:14px}.beauty-footer a:hover{color:#cfa38d}.beauty-footer__bottom{display:flex;justify-content:space-between;gap:25px;padding-top:23px;border-top:1px solid #4a4a4a;color:#a9a9a9;font-size:11px}.beauty-footer__bottom p{margin:0}.beauty-footer__bottom div{display:flex;flex-wrap:wrap;gap:17px}.beauty-footer__bottom a{color:#a9a9a9;font-size:11px}@media(max-width:749px){.beauty-footer{padding:60px 25px 24px}.beauty-footer__top,.beauty-footer__links{grid-template-columns:1fr;gap:38px}.beauty-footer__top{padding-bottom:48px}.beauty-footer h2{font-size:40px}.beauty-footer__links{padding:42px 0}.beauty-footer__bottom{flex-direction:column}.beauty-footer__bottom div{gap:12px}}
+{% endstylesheet %}
+{% schema %}
+{"name":"Beauty footer","settings":[{"type":"textarea","id":"description","label":"Brand description","default":"Thoughtfully formulated beauty essentials for every version of your day."},{"type":"text","id":"newsletter_heading","label":"Newsletter heading","default":"Receive new rituals, first."},{"type":"link_list","id":"menu","label":"Footer menu"}],"presets":[{"name":"Beauty footer"}]}
+{% endschema %}

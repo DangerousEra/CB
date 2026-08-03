@@ -15,6 +15,9 @@ body { background: #fff; color: var(--beauty-ink); }
 .main-collection h1, .product-information h1 { letter-spacing: -.045em; }
 .button, .button-custom, .shopify-payment-button__button { border-radius: 9px !important; letter-spacing: .05em; font-size: .78rem; }
 .cart-summary { background: var(--beauty-blush) !important; }
+@supports (content-visibility: auto) {
+  .content-for-layout > .shopify-section:not(:first-child) { content-visibility: auto; contain-intrinsic-size: auto 650px; }
+}
 @media (max-width: 749px) { .header-section { border-bottom: 1px solid var(--beauty-line); } }
 
 /* Premium mobile navigation */

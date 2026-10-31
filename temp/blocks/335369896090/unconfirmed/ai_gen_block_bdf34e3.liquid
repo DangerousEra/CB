@@ -1,6 +1,144 @@
+{% doc %}
+  @prompt
+    An interactive vertical timeline that highlights as the user scrolls
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-timeline-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    color: {{ block.settings.text_color }};
+    background: {{ block.settings.background_color }};
+    padding: 36px 28px;
+    box-sizing: border-box;
+  }
+  .ai-timeline-{{ ai_gen_id }}__heading { margin: 0 0 30px; color: {{ block.settings.text_color }}; font-size: 28px; line-height: 1.2; }
+  .ai-timeline-{{ ai_gen_id }}__list { list-style: none; padding: 0; margin: 0; position: relative; }
+  .ai-timeline-{{ ai_gen_id }}__list::before { content: ''; position: absolute; top: 10px; bottom: 10px; left: 15px; width: 2px; background: {{ block.settings.line_color }}; }
+  .ai-timeline-{{ ai_gen_id }}__item { position: relative; padding: 0 0 34px 52px; }
+  .ai-timeline-{{ ai_gen_id }}__item:last-child { padding-bottom: 0; }
+  .ai-timeline-{{ ai_gen_id }}__marker { position: absolute; left: 7px; top: 3px; width: 18px; height: 18px; box-sizing: border-box; border: 2px solid {{ block.settings.line_color }}; border-radius: 50%; background: {{ block.settings.background_color }}; transition: background-color .2s ease, border-color .2s ease, transform .2s ease; }
+  .ai-timeline-{{ ai_gen_id }}__item.is-active .ai-timeline-{{ ai_gen_id }}__marker { background: {{ block.settings.accent_color }}; border-color: {{ block.settings.accent_color }}; transform: scale(1.15); }
+  .ai-timeline-{{ ai_gen_id }}__item.is-active .ai-timeline-{{ ai_gen_id }}__title { color: {{ block.settings.accent_color }}; }
+  .ai-timeline-{{ ai_gen_id }}__button { appearance: none; display: block; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; font: inherit; cursor: pointer; width: 100%; }
+  .ai-timeline-{{ ai_gen_id }}__button:focus-visible { outline: 2px solid {{ block.settings.accent_color }}; outline-offset: 5px; border-radius: 2px; }
+  .ai-timeline-{{ ai_gen_id }}__title { margin: 0 0 7px; font-size: 19px; line-height: 1.35; font-weight: 650; }
+  .ai-timeline-{{ ai_gen_id }}__body { font-size: 15px; line-height: 1.6; }
+  .ai-timeline-{{ ai_gen_id }}__body p { margin: 0; }
+  @media (prefers-reduced-motion: reduce) {
+    .ai-timeline-{{ ai_gen_id }}__marker { transition: none; }
+  }
+  @media screen and (max-width: 749px) {
+    .ai-timeline-{{ ai_gen_id }} { padding: 28px 18px; }
+    .ai-timeline-{{ ai_gen_id }}__heading { font-size: 24px; }
+    .ai-timeline-{{ ai_gen_id }}__item { padding-left: 44px; }
+  }
+{% endstyle %}
+
+<vertical-timeline-{{ ai_gen_id }} class="ai-timeline-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  {% if block.settings.heading != blank %}<h2 class="ai-timeline-{{ ai_gen_id }}__heading">{{ block.settings.heading | escape }}</h2>{% endif %}
+  <ol class="ai-timeline-{{ ai_gen_id }}__list" aria-label="{{ block.settings.heading | default: 'Timeline' | escape }}">
+    {% for i in (1..5) %}
+      {% liquid
+        assign title_key = 'milestone_' | append: i | append: '_title'
+        assign body_key = 'milestone_' | append: i | append: '_text'
+        assign title = block.settings[title_key]
+        assign body = block.settings[body_key]
+      %}
+      {% if title != blank or body != blank %}
+        <li class="ai-timeline-{{ ai_gen_id }}__item{% if forloop.first %} is-active{% endif %}" data-timeline-item>
+          <span class="ai-timeline-{{ ai_gen_id }}__marker" aria-hidden="true"></span>
+          <button class="ai-timeline-{{ ai_gen_id }}__button" type="button" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}" data-timeline-button>
+            {% if title != blank %}<h3 class="ai-timeline-{{ ai_gen_id }}__title">{{ title | escape }}</h3>{% endif %}
+            {% if body != blank %}<div class="ai-timeline-{{ ai_gen_id }}__body">{{ body }}</div>{% endif %}
+          </button>
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ol>
+</vertical-timeline-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    const tagName = 'vertical-timeline-{{ ai_gen_id }}';
+    if (customElements.get(tagName)) return;
+    class VerticalTimeline{{ ai_gen_id }} extends HTMLElement {
+      connectedCallback() {
+        this.items = Array.from(this.querySelectorAll('[data-timeline-item]'));
+        if (!this.items.length) return;
+        this.onScroll = this.updateActive.bind(this);
+        this.items.forEach((item, index) => {
+          const button = item.querySelector('[data-timeline-button]');
+          button.addEventListener('click', () => {
+            item.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+            this.setActive(index);
+          });
+        });
+        window.addEventListener('scroll', this.onScroll, { passive: true });
+        window.addEventListener('resize', this.onScroll);
+        this.updateActive();
+      }
+      disconnectedCallback() {
+        window.removeEventListener('scroll', this.onScroll);
+        window.removeEventListener('resize', this.onScroll);
+      }
+      setActive(activeIndex) {
+        this.items.forEach((item, index) => {
+          const active = index === activeIndex;
+          item.classList.toggle('is-active', active);
+          item.querySelector('[data-timeline-button]').setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+      }
+      updateActive() {
+        const line = window.innerHeight * 0.48;
+        let closest = 0;
+        let distance = Infinity;
+        this.items.forEach((item, index) => {
+          const rect = item.getBoundingClientRect();
+          const center = rect.top + Math.min(rect.height, 80) / 2;
+          const currentDistance = Math.abs(center - line);
+          if (rect.top < window.innerHeight && rect.bottom > 0 && currentDistance < distance) {
+            closest = index;
+            distance = currentDistance;
+          }
+        });
+        this.setActive(closest);
+      }
+    }
+    customElements.define(tagName, VerticalTimeline{{ ai_gen_id }});
+  })();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Scroll timeline",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Our journey" },
+    { "type": "range", "id": "desktop_width_percent", "label": "Desktop width", "min": 50, "max": 100, "step": 5, "unit": "%", "default": 100 },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#1a1a1a" },
+    { "type": "color", "id": "line_color", "label": "Timeline line", "default": "#767676" },
+    { "type": "color", "id": "accent_color", "label": "Active milestone", "default": "#6b2352" },
+    { "type": "header", "content": "Milestone 1" },
+    { "type": "text", "id": "milestone_1_title", "label": "Title", "default": "A thoughtful beginning" },
+    { "type": "richtext", "id": "milestone_1_text", "label": "Description", "default": "<p>Share the first chapter of your story.</p>" },
+    { "type": "header", "content": "Milestone 2" },
+    { "type": "text", "id": "milestone_2_title", "label": "Title", "default": "Made with care" },
+    { "type": "richtext", "id": "milestone_2_text", "label": "Description", "default": "<p>Describe a meaningful step along the way.</p>" },
+    { "type": "header", "content": "Milestone 3" },
+    { "type": "text", "id": "milestone_3_title", "label": "Title", "default": "Growing together" },
+    { "type": "richtext", "id": "milestone_3_text", "label": "Description", "default": "<p>Tell customers how your journey has grown.</p>" },
+    { "type": "header", "content": "Milestone 4" },
+    { "type": "text", "id": "milestone_4_title", "label": "Title", "default": "A new chapter" },
+    { "type": "richtext", "id": "milestone_4_text", "label": "Description", "default": "<p>Highlight a launch, achievement, or important moment.</p>" },
+    { "type": "header", "content": "Milestone 5" },
+    { "type": "text", "id": "milestone_5_title", "label": "Title", "default": "What comes next" },
+    { "type": "richtext", "id": "milestone_5_text", "label": "Description", "default": "<p>Close with what you are excited to share next.</p>" }
+  ],
+  "presets": [{ "name": "Scroll timeline" }],
+  "tag": null,
+  "class": "scroll-timeline-block"
+}
 {% endschema %}

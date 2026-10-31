@@ -11,6 +11,7 @@
   "sections": {
     "beauty_home": {
       "type": "beauty-brand-home",
+      "disabled": true,
       "settings": {
         "hero_image": "shopify://shop_images/Dewy_Glow_with_Cherry_Blossoms.png",
         "eyebrow": "Skin, considered",
@@ -106,7 +107,6 @@
         "text_edJQfz",
         "button_Njzxby"
       ],
-      "disabled": true,
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "image",
@@ -300,12 +300,71 @@
         "padding-block-start": 0,
         "padding-block-end": 0
       }
+    },
+    "1793471621fd46148d": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_bdf34e3_e6M4AY": {
+          "type": "ai_gen_block_bdf34e3",
+          "settings": {
+            "heading": "Our journey",
+            "desktop_width_percent": 100,
+            "background_color": "#ffffff",
+            "text_color": "#1a1a1a",
+            "line_color": "#767676",
+            "accent_color": "#6b2352",
+            "milestone_1_title": "A thoughtful beginning",
+            "milestone_1_text": "<p>Share the first chapter of your story.</p>",
+            "milestone_2_title": "Made with care",
+            "milestone_2_text": "<p>Describe a meaningful step along the way.</p>",
+            "milestone_3_title": "Growing together",
+            "milestone_3_text": "<p>Tell customers how your journey has grown.</p>",
+            "milestone_4_title": "A new chapter",
+            "milestone_4_text": "<p>Highlight a launch, achievement, or important moment.</p>",
+            "milestone_5_title": "What comes next",
+            "milestone_5_text": "<p>Close with what you are excited to share next.</p>"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_bdf34e3_e6M4AY"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "background_media": "none",
+        "background_color": "",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
     }
   },
   "order": [
     "beauty_home",
     "hero_Y6nUHa",
     "featured_product_UkPGYx",
+    "1793471621fd46148d",
     "media_with_content_QixM8Q"
   ]
 }

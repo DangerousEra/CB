@@ -1,6 +1,10 @@
 /*
  * ------------------------------------------------------------
  * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
 {
@@ -8,6 +12,7 @@
     "beauty_home": {
       "type": "beauty-brand-home",
       "settings": {
+        "hero_image": "shopify://shop_images/Dewy_Glow_with_Cherry_Blossoms.png",
         "eyebrow": "Skin, considered",
         "heading": "Your glow begins with a ritual.",
         "text": "Consciously crafted skincare for the quiet moments that bring you back to yourself.",
@@ -19,9 +24,12 @@
         "promise_3": "Always cruelty-free",
         "collection": "all",
         "collection_heading": "Best-loved essentials",
-        "products_to_show": 4
+        "products_to_show": 4,
+        "story_link": ""
       }
     }
   },
-  "order": ["beauty_home"]
+  "order": [
+    "beauty_home"
+  ]
 }
